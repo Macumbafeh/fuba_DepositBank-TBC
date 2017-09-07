@@ -169,6 +169,10 @@ StaticPopupDialogs.FUBA_DEPOSITBANK_WHITELISTITEM_REMOVE = {
 }
 
 BlacklistPanel:SetScript('OnShow', function(self)
+	for item in next, fubaDepositBankDB.itemBlacklist do
+		GameTooltip:SetHyperlink("item:"..item..":0:0:0:0:0:0:0");
+	end
+
 	local Title = self:CreateFontString(nil, nil, 'GameFontHighlight')
 	Title:SetPoint('TOPLEFT', 20, -20)
 	Title:SetText('Item(s) Ignored from Deposit to Bank')
@@ -210,7 +214,6 @@ BlacklistPanel:SetScript('OnShow', function(self)
 
 	local function ItemOnEnter(self)
 		GameTooltip:SetOwner(self, 'ANCHOR_TOPLEFT')
-		--GameTooltip:SetItemByID(self.itemID)
 		GameTooltip:SetHyperlink(format("item:%d:0:0:0:0:0:0:0", self.itemID))
 		GameTooltip:AddLine(' ')
 		GameTooltip:AddLine('Right-click to remove from list', 0, 1, 0)
@@ -245,7 +248,6 @@ BlacklistPanel:SetScript('OnShow', function(self)
 			if(textureFile) then
 				Button.Texture:SetTexture(textureFile)
 			elseif(not queryItems) then
-				GameTooltip:SetHyperlink("item:"..item..":0:0:0:0:0:0:0");
 				self:RegisterEvent('GET_ITEM_INFO_RECEIVED')
 				queryItems = true
 			end
@@ -287,6 +289,10 @@ end)
 
 
 WhitelistPanel:SetScript('OnShow', function(self)
+	for item in next, fubaDepositBankDB.itemBlacklist do
+		GameTooltip:SetHyperlink("item:"..item..":0:0:0:0:0:0:0");
+	end
+
 	local Title = self:CreateFontString(nil, nil, 'GameFontHighlight')
 	Title:SetPoint('TOPLEFT', 20, -20)
 	Title:SetText('Item(s) Forced to Deposit to Bank')
@@ -328,7 +334,6 @@ WhitelistPanel:SetScript('OnShow', function(self)
 
 	local function ItemOnEnter(self)
 		GameTooltip:SetOwner(self, 'ANCHOR_TOPLEFT')
-		--GameTooltip:SetItemByID(self.itemID)
 		GameTooltip:SetHyperlink(format("item:%d:0:0:0:0:0:0:0", self.itemID))
 		GameTooltip:AddLine(' ')
 		GameTooltip:AddLine('Right-click to remove from list', 0, 1, 0)
@@ -363,7 +368,6 @@ WhitelistPanel:SetScript('OnShow', function(self)
 			if(textureFile) then
 				Button.Texture:SetTexture(textureFile)
 			elseif(not queryItems) then
-				GameTooltip:SetHyperlink("item:"..item..":0:0:0:0:0:0:0");
 				self:RegisterEvent('GET_ITEM_INFO_RECEIVED')
 				queryItems = true
 			end
