@@ -109,7 +109,7 @@ local function DepositOnClick(self)
 end
 
 local function CreateDefaultButton()
-	local f = _G["BankSlotsFrame"]
+	local f = _G["BankFrame"]
 	if debug then print("|cffff8000fuba: |r FrameName -> "..f:GetName()) end
 	if (not f) then return end
 
@@ -121,8 +121,9 @@ local function CreateDefaultButton()
 
 	local btn = _G[btnName] or CreateFrame("Button", btnName, f, "UIPanelButtonTemplate");
 	btn:ClearAllPoints();
-	btn:SetPoint("BOTTOMLEFT", f, "BOTTOMLEFT", 22, 60);
-	btn:SetSize(150, 24);
+	btn:SetPoint("CENTER", f, "CENTER", -33, -115);
+	btn:SetWidth(110)
+	btn:SetHeight(21)
 	btn:SetText("Deposit");
 	btn:SetScript("OnClick", DepositOnClick);
 	if IsAddOnLoaded("ElvUI") and ElvUI then
@@ -148,9 +149,9 @@ local function CreateElvUIButton(self, name, isBank)
 			if debug then print("|cffff8000fuba: |r "..btnName.." still exists.") end;
 			return;
 		end;
-
-		f.BnkDepositButton = btnName or CreateFrame("Button", btnName, f.holderFrame);
+		f.BnkDepositButton = CreateFrame("Button", btnName, f.holderFrame);
 		f.BnkDepositButton:SetSize(16 + E.Border, 16 + E.Border);
+
 		f.BnkDepositButton:SetTemplate();
 		f.BnkDepositButton:SetNormalTexture("Interface\\AddOns\\fuba_DepositBank\\arrowleft");
 		f.BnkDepositButton:GetNormalTexture():SetTexCoord(unpack(E.TexCoords));
@@ -166,36 +167,6 @@ local function CreateElvUIButton(self, name, isBank)
 
 		f.BnkDepositButton:SetPoint("RIGHT", f.purchaseBagButton, "LEFT", -5, 0);
 		f.editBox:Point('RIGHT', f.BnkDepositButton, 'LEFT', -5, 0);
-
-		f.reagentToggle:SetScript("OnClick", function()
-			PlaySound("igCharacterInfoTab");
-			if f.holderFrame:IsShown() then
-				BankFrame.selectedTab = 2
-				f.holderFrame:Hide()
-				f.reagentFrame:Show()
-				f.editBox:Point('RIGHT', f.depositButton, 'LEFT', -5, 0);
-				f.bagText:SetText(L["Reagent Bank"])
-				if isCTEnabled then
-					f.reagentToggle:Point("RIGHT", f.bagText, "LEFT", -5, E.Border * 2)
-				end
-			else
-				BankFrame.selectedTab = 1
-				f.reagentFrame:Hide()
-				f.holderFrame:Show()
-				f.editBox:Point('RIGHT', f.BnkDepositButton, 'LEFT', -5, 0);
-				f.bagText:SetText(L["Bank"])
-				if isCTEnabled then
-					if E.db.CustomTweaks.BagButtons.stackButton then
-						f.reagentToggle:Point("RIGHT", f.stackButton, "LEFT", -5, 0)
-					else
-						f.reagentToggle:Point("RIGHT", f.bagText, "LEFT", -5, E.Border * 2)
-					end
-				end
-			end
-
-			B:Layout(true)
-			f:Show()
-		end)
 	end
 end
 
@@ -240,13 +211,13 @@ local function CreateArkButton()
 		end
 		btn:SetPoint("RIGHT", lab, "LEFT", -2, 0);
 		btn:SetNormalTexture("Interface\\AddOns\\fuba_DepositBank\\arrowleft");
-		btn:SetSize(20, 20);
+		btn:SetWidth(20)
+		btn:SetHeight(20)
 		btn:RegisterForClicks("AnyUp");
 		btn:SetScript("OnClick", DepositOnClick);
 		btn:SetScript("OnUpdate", btnOnUpdate);
 		btn:SetScript("OnEnter", btnOnEnter);
 		btn:SetScript("OnLeave", btnOnLeave);
-
 	end
 end
 
@@ -263,14 +234,12 @@ local function CreateDepositButton()
 			if debug then print("|cffff8000fuba: |r ElvUI private Bags disabled.") end
 			CreateDefaultButton()
 		end
+	elseif IsAddOnLoaded("ArkInventory") then
+		if debug then print("|cffff8000fuba: |r ArkInventory loaded.") end
+		CreateArkButton()
 	else
 		if debug then print("|cffff8000fuba: |r ElvUI not loaded.") end
 		CreateDefaultButton()
-	end
-
-	if IsAddOnLoaded("ArkInventory") then
-		if debug then print("|cffff8000fuba: |r ArkInventory loaded.") end
-		CreateArkButton()
 	end
 end
 
