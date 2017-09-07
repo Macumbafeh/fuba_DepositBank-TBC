@@ -205,16 +205,29 @@ local function CreateArkButton()
 		end
 
 		local btn = _G[btnName] or CreateFrame("Button", btnName, lab:GetParent(), UIPanelButtonTemplate);
+		
 		if IsAddOnLoaded("ElvUI") and ElvUI then
+			local E, L, V, P, G = unpack(ElvUI);
 			btn:StripTextures();
-			ElvUI[1]:GetModule('Skins'):HandleButton(btn);
+			btn:SetTemplate();
+			btn:SetNormalTexture("Interface\\AddOns\\fuba_DepositBank\\arrowleft");
+			btn:GetNormalTexture():SetTexCoord(unpack(E.TexCoords));
+			btn:GetNormalTexture():SetInside();
+			btn:SetPushedTexture("Interface\\AddOns\\fuba_DepositBank\\arrowleft");
+			btn:GetPushedTexture():SetTexCoord(unpack(E.TexCoords));
+			btn:GetPushedTexture():SetInside();
+			btn:StyleButton(nil, true);
+		else
+			btn:SetNormalTexture("Interface\\AddOns\\fuba_DepositBank\\arrowleft");
 		end
-		btn:SetPoint("RIGHT", lab, "LEFT", -2, 0);
-		btn:SetNormalTexture("Interface\\AddOns\\fuba_DepositBank\\arrowleft");
+		
+		btn:SetPoint("RIGHT", lab, "LEFT", -2, 0);		
 		btn:SetWidth(20)
 		btn:SetHeight(20)
 		btn:RegisterForClicks("AnyUp");
-		btn:SetScript("OnClick", DepositOnClick);
+		btn:SetScript("OnClick", function(self)
+			DepositOnClick(self);
+		end);
 		btn:SetScript("OnUpdate", btnOnUpdate);
 		btn:SetScript("OnEnter", btnOnEnter);
 		btn:SetScript("OnLeave", btnOnLeave);
@@ -234,12 +247,14 @@ local function CreateDepositButton()
 			if debug then print("|cffff8000fuba: |r ElvUI private Bags disabled.") end
 			CreateDefaultButton()
 		end
-	elseif IsAddOnLoaded("ArkInventory") then
-		if debug then print("|cffff8000fuba: |r ArkInventory loaded.") end
-		CreateArkButton()
 	else
 		if debug then print("|cffff8000fuba: |r ElvUI not loaded.") end
 		CreateDefaultButton()
+	end
+	
+	if IsAddOnLoaded("ArkInventory") then
+		if debug then print("|cffff8000fuba: |r ArkInventory loaded.") end
+		CreateArkButton()
 	end
 end
 
