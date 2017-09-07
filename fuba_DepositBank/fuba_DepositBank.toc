@@ -1,0 +1,9 @@
+## Interface: 20400
+## Version: 2.4.3
+## Title: |cff0080fffuba's|r |cffff8000Deposit Bank|r
+## Notes: Deposit Profession Items from Inventory to Bank
+## Author: fuba
+## SavedVariables: fubaDepositBankDB
+
+Core.lua
+Config.lua
