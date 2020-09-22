@@ -4,6 +4,7 @@
 ## Notes: Deposit Profession Items from Inventory to Bank
 ## Author: fuba
 ## SavedVariables: fubaDepositBankDB
+## RequiredDeps: !Compatibility
 
 Core.lua
 Config.lua
